@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Tilemaps;
 
 /**
  * A generic implementation of the BFS algorithm.
@@ -13,76 +15,104 @@ public class Dijkstra
             WeightedGraph<NodeType> graph,
             NodeType startNode, NodeType endNode,
             List<NodeType> outputPath, int maxiterations = 1000)
-    {   
-        Queue<NodeType> openQueue = new Queue<NodeType>();
-        HashSet<NodeType> closedSet = new HashSet<NodeType>();
-        Dictionary<NodeType, NodeType> previous = new Dictionary<NodeType, NodeType>();
+    {
+        //Queue<NodeType> openQueue = new Queue<NodeType>();
+        Dictionary<NodeType, bool> visited = new Dictionary<NodeType, bool>();
+        Dictionary<NodeType, NodeType> prev = new Dictionary<NodeType, NodeType>();
         Dictionary<NodeType, int> distance = new Dictionary<NodeType, int>();
-        distance[startNode] = 0;
-        openQueue.Enqueue(startNode);
-        int i; for (i = 0; i < maxiterations; ++i)
-        { // After maxiterations, stop and return an empty path
-            if (openQueue.Count == 0)
+        distance.Add(startNode, 0);
+        //openQueue.Enqueue(startNode);
+        NodeType v = startNode;
+        
+        Debug.Log("Key Enqueue:" + startNode);
+        int i = 0;
+        while(!v.Equals(endNode) && i < maxiterations)
+        {
+            
+            foreach (var neighbor in graph.Neighbors(v))
             {
-                break;
-            }
-            else
-            {
-                NodeType searchFocus = openQueue.Dequeue();
-
-                if (searchFocus.Equals(endNode))
+                int dis = distance[v] + graph.GetWeight(neighbor);
+                if ((visited.ContainsKey(neighbor) && distance[neighbor] > dis) || (!visited.ContainsKey(neighbor)))
                 {
-                    // We found the target -- now construct the path:
-                    outputPath.Add(endNode);
-                    while (previous.ContainsKey(searchFocus))
-                    {
-                        searchFocus = previous[searchFocus];
-                        outputPath.Add(searchFocus);
-                    }
-                    outputPath.Reverse();
+                    distance[neighbor] = dis;
+                    prev[neighbor] = v;
+                }
+            }
+            visited[v] = true;
+            v = ExtractMin(distance, visited);
+            /*for (i = 0; i < maxiterations; ++i)
+            { // After maxiterations, stop and return an empty path
+                if (openQueue.Count == 0)
+                {
                     break;
                 }
                 else
                 {
-                    Dictionary<NodeType, int> neighbor_dis = new Dictionary<NodeType, int>();
+                    v = ExctractMin(distance, visited);
+                    Debug.Log("Key  min neigbor Dequeue:" + v);
 
-                    // We did not found the target yet -- develop new nodes.
-                    foreach (var neighbor in graph.Neighbors(searchFocus))
+                    if (searchFocus.Equals(endNode))
                     {
-                        if (closedSet.Contains(neighbor))
+                        // We found the target -- now construct the path:
+                        outputPath.Add(endNode);
+                        while (previous.ContainsKey(searchFocus))
                         {
-                            continue;
+                            searchFocus = previous[searchFocus];
+                            outputPath.Add(searchFocus);
                         }
-                        
-                        int dis = distance[searchFocus] + graph.GetWeight(neighbor);
-                        if (!distance.ContainsKey(neighbor))
+                        outputPath.Reverse();
+                        break;
+                    }
+                    else
+                    {
+                        Dictionary<NodeType, int> neighbor_dis = new Dictionary<NodeType, int>();
+
+                        // We did not found the target yet -- develop new nodes.
+                        foreach (var neighbor in graph.Neighbors(searchFocus))
                         {
-                            distance[neighbor] = dis;
-                            neighbor_dis[neighbor] = dis;
-                        }
-                        else
-                        {
-                            if(distance[neighbor] > dis)
+                            if (closedSet.Contains(neighbor))
+                            {
+                                continue;
+                            }
+
+
+                            int dis = distance[searchFocus] + graph.GetWeight(neighbor);
+
+
+                            if (!distance.ContainsKey(neighbor))
                             {
                                 distance[neighbor] = dis;
                                 neighbor_dis[neighbor] = dis;
                             }
-                        }
-                        
-                        previous[neighbor] = searchFocus; // father of the negibor
-                    }
-                    NodeType n = neighbor_dis;
-                    GetMinNeighbor(neighbor_dis, n);
-                    openQueue.Enqueue(n);
-                    closedSet.Add(searchFocus); // is black
-                }
-            }
-        }
-    }
+                            else
+                            {
+                                if(distance[neighbor] > dis)
+                                {
+                                    distance[neighbor] = dis;
+                                    neighbor_dis[neighbor] = dis;
+                                }
+                            }
 
-    private static void GetMinNeighbor<NodeType>(Dictionary<NodeType, int> neighbor_dis, NodeType node)
+                            previous[neighbor] = searchFocus; // father of the negibor
+                        }
+                        NodeType n = GetMinNeighbor(neighbor_dis);
+                        openQueue.Enqueue(n);
+                        Debug.Log("Key min neighbor Enqueue:" + n);
+                        closedSet.Add(searchFocus); // is black
+                    }
+                }
+            }*/
+        }
+
+    /*private static NodeType GetMinNeighbor<NodeType>(Dictionary<NodeType, int> neighbor_dis)
     {
-        int min = Int32.MaxValue;
+        
+        ICollection<NodeType> c = neighbor_dis.Keys;
+        NodeType[] narray = new NodeType[neighbor_dis.Count];
+        c.CopyTo(narray, 0);
+        Debug.Log("array length:" +narray.Length);
+        NodeType node = narray[0];
+        int min = neighbor_dis[node];
         foreach (var neighbor in neighbor_dis)
         {   
             if(min > neighbor.Value)
@@ -91,13 +121,37 @@ public class Dijkstra
                 node = neighbor.Key;
             }
         }
-    }
+        return node;
+    }*/
 
-    public static List<NodeType> GetPath<NodeType>(IGraph<NodeType> graph, NodeType startNode, NodeType endNode, int maxiterations = 1000)
+    static List<NodeType> GetPath<NodeType>(WeightedGraph<NodeType> graph, NodeType startNode, NodeType endNode, int maxiterations = 1000)
     {
         List<NodeType> path = new List<NodeType>();
         FindPath(graph, startNode, endNode, path, maxiterations);
         return path;
     }
 
+}
+
+    private static NodeType ExtractMin<NodeType>(Dictionary<NodeType, int> distance, Dictionary<NodeType, bool> visited)
+    {
+        ICollection<NodeType> keys = distance.Keys;
+        NodeType[] keysArray = new NodeType[distance.Count];
+        keys.CopyTo(keysArray, 0);
+        ICollection<int> values = distance.Values;
+        int[] valuesArray = new int[distance.Count];
+        keys.CopyTo(keysArray, 0);
+        values.CopyTo(valuesArray, 0);
+        Debug.Log("array length:" + keysArray.Length);
+        NodeType node = keysArray[0];
+        int min = valuesArray[0];
+        foreach(var v in distance)
+        {
+            if(!visited[v.Key] && v.Value< min)
+            {
+                node = v.Key;
+            }
+        }
+        return node;
+    }
 }

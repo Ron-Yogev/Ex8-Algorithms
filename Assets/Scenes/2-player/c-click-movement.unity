@@ -394,6 +394,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 931517250}
   allowedTiles: {fileID: 73550133}
+  _Keys:
+  - {fileID: 11400000, guid: 149fb7c95775bc842bc8f54055585274, type: 2}
+  - {fileID: 11400000, guid: 0cea26e1a47ac8d46850becac1a6c757, type: 2}
+  - {fileID: 11400000, guid: 2ad1759387b28444892c8549e6122652, type: 2}
+  - {fileID: 11400000, guid: 8f2cab6dea1a2d147b231cc92eb1f7e2, type: 2}
+  _Values: 01000000020000000300000004000000
   speed: 10
   maxIterations: 10000
   targetInWorld: {x: 0, y: 0, z: 0}

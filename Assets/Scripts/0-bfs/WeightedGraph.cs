@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine.Tilemaps;
 
 /**
  * An abstract graph.
@@ -11,5 +12,5 @@
 public interface WeightedGraph<T>:IGraph<T>
 {
     int GetWeight(T node1);
-
-}
+    Tilemap GetTilemap();
+    }
