@@ -22,12 +22,12 @@ public class Dijkstra
         Dictionary<NodeType, int> distance = new Dictionary<NodeType, int>();
         distance.Add(startNode, 0);
         NodeType v = startNode;
-
+        visited.AddLast(startNode);
         Debug.Log("Key Enqueue:" + startNode);
         int i = 0;
         while (!v.Equals(endNode) && i < maxiterations)
         {
-
+            v = ExtractMin(distance, visited);
             foreach (var neighbor in graph.Neighbors(v))
             {
                 int dis = distance[v] + graph.GetWeight(neighbor);
@@ -38,7 +38,11 @@ public class Dijkstra
                 }
             }
             visited.AddFirst(v);
-            v = ExtractMin(distance, visited);
+            distance.Remove(v);
+                       // v = ExtractMin(distance, visited);
+
+            Debug.Log(v.ToString());
+            i++;
         }
         outputPath = CreatePath(prev, startNode, endNode);
         
@@ -48,11 +52,12 @@ public class Dijkstra
     {
         List<NodeType> ans = new List<NodeType>();
         NodeType temp = endNode;
-
+        int i = 0;
         while(!prev[temp].Equals(startNode))
         {
             ans.Add(temp);
             temp = prev[temp];
+            Debug.Log("Create path "+i++);
         }
         ans.Reverse();
         return ans;
@@ -67,23 +72,25 @@ public class Dijkstra
 
     private static NodeType ExtractMin<NodeType>(Dictionary<NodeType, int> distance, LinkedList<NodeType> visited)
     {
-        ICollection<NodeType> keys = distance.Keys;
-        NodeType[] keysArray = new NodeType[distance.Count];
-        keys.CopyTo(keysArray, 0);
-        ICollection<int> values = distance.Values;
-        int[] valuesArray = new int[distance.Count];
-        keys.CopyTo(keysArray, 0);
-        values.CopyTo(valuesArray, 0);
-        Debug.Log("array length:" + keysArray.Length);
-        NodeType node = keysArray[0];
-        int min = valuesArray[0];
+        //ICollection<NodeType> keys = distance.Keys;
+        //NodeType[] keysArray = new NodeType[distance.Count];
+        //keys.CopyTo(keysArray, 0);
+        //ICollection<int> values = distance.Values;
+        //int[] valuesArray = new int[distance.Count];
+        //keys.CopyTo(keysArray, 0);
+        //values.CopyTo(valuesArray, 0);
+        //Debug.Log("array length:" + keysArray.Length);
+        NodeType node = visited.First.Value;
+        int min = 1000000;
         foreach(var v in distance)
         {
-            if(!visited.Contains(v.Key) && v.Value< min)
+            if(!visited.Contains(v.Key) && v.Value<= min)
             {
                 node = v.Key;
             }
+            Debug.Log("Length " +v.Key.ToString());
         }
+        Debug.Log("Length out of for" + node.ToString());
         return node;
     }
 }
