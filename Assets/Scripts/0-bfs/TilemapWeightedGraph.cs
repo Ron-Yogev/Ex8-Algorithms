@@ -41,13 +41,6 @@ public class TilemapWeightedGraph : WeightedGraph<Vector3Int>
     public int GetWeight(Vector3Int node1)
     {
         TileBase pos = this.tilemap.GetTile(node1);
-       /* foreach(var node in tilesWeight)
-        {
-            Debug.Log("Key:" + node.Key +", Value:" + node.Value);
-
-        }*/
-        Debug.Log("tilewegiht:"+tilesWeight.ToString());
-        Debug.Log("pos:" + pos.ToString());
         int b = tilesWeight[pos];
         return b;
     }

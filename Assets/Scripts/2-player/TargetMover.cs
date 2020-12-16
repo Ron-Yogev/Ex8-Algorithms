@@ -10,9 +10,6 @@ public class TargetMover: MonoBehaviour {
     [SerializeField] Tilemap tilemap = null;
     [SerializeField] AllowedTiles allowedTiles = null;
 
-     Dictionary<TileBase, int> tilesWeight = null;
-    [SerializeField] List<TileBase> _Keys;
-    [SerializeField] List<int> _Values;
 
     [Tooltip("The speed by which the object moves towards the target, in meters (=grid units) per second")]
     [SerializeField] float speed = 2f;
@@ -41,20 +38,12 @@ public class TargetMover: MonoBehaviour {
     }
 
     //private TilemapGraph tilemapGraph = null;
-    private TilemapWeightedGraph tilemapWeightedGraph = null;
+    private TilemapGraph tilemapGraph = null;
     private float timeBetweenSteps;
 
     protected virtual void Start() {
-        //tilemapGraph = new TilemapGraph(tilemap, allowedTiles.Get());
-        tilesWeight = new Dictionary<TileBase, int>();
-        for (int i =0; i< _Keys.Count; i++)
-        {
-            Debug.Log("mcksdmcksdmkcsdmkcsd");
-            Debug.Log("Key:" + _Keys[i] + ", Value:" + _Values[i]);
-            tilesWeight.Add(_Keys[i], _Values[i]);
-            Debug.Log(tilesWeight[_Keys[i]]);
-        }
-        tilemapWeightedGraph = new TilemapWeightedGraph(tilemap, allowedTiles.Get(),tilesWeight);
+ 
+        tilemapGraph = new TilemapGraph(tilemap, allowedTiles.Get());
         timeBetweenSteps = 1 / speed;
         StartCoroutine(MoveTowardsTheTarget());
     }
@@ -70,8 +59,8 @@ public class TargetMover: MonoBehaviour {
     private void MakeOneStepTowardsTheTarget() {
         Vector3Int startNode = tilemap.WorldToCell(transform.position);
         Vector3Int endNode = targetInGrid;
-        List<Vector3Int> shortestPath = Dijkstra.GetPath(tilemapWeightedGraph, startNode, endNode, maxIterations);
-        Debug.Log("shortestPath = " + string.Join(" , ",shortestPath));
+        List<Vector3Int> shortestPath = BFS.GetPath(tilemapGraph, startNode, endNode, maxIterations);
+        //Debug.Log("shortestPath = " + string.Join(" , ",shortestPath));
         if (shortestPath.Count >= 2) {
             Vector3Int nextNode = shortestPath[1];
             transform.position = tilemap.GetCellCenterWorld(nextNode);

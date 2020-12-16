@@ -11,7 +11,65 @@ using UnityEngine.Tilemaps;
 public class Dijkstra
 {
 
-    public static void FindPath<NodeType>(
+    private static Dictionary<NodeType, NodeType> DijekstraBuilder<NodeType>(WeightedGraph<NodeType> graph, NodeType source)
+    {
+        Dictionary<NodeType, int> graphCurrW = new Dictionary<NodeType, int>();
+        Dictionary<NodeType, NodeType> Fathers = new Dictionary<NodeType, NodeType>();
+        Dictionary<NodeType, bool> visted = new Dictionary<NodeType, bool>();
+
+        List<NodeType> Mins = new List<NodeType>();
+        Mins.Add(source);
+        graphCurrW.Add(source, 0);
+        while (Mins.Count != 0)
+        {
+            NodeType currNode = Mins[0];
+            if (!visted.ContainsKey(currNode))
+            {
+                visted.Add(currNode, true);
+                Mins.RemoveAt(0);
+                foreach (var neighbor in graph.Neighbors(currNode))
+                {
+                    if (graphCurrW.ContainsKey(neighbor))
+                    {
+                        // Debug.Log("27");
+                        if (graphCurrW[neighbor] > graphCurrW[currNode] + graph.GetWeight(neighbor))
+                        {
+                            //   Debug.Log("30");
+                            graphCurrW[neighbor] = graphCurrW[currNode] + graph.GetWeight(neighbor);
+                            // Debug.Log("32");
+                            Fathers[neighbor] = currNode;
+                            if (!visted.ContainsKey(neighbor))
+                            {
+                                //  Debug.Log("36");
+                                insertNeighbour(Mins, graphCurrW[neighbor], neighbor, graph);
+                                //Mins.Insert(getPosInArray(Mins, graphCurrW[neighbor], graph), neighbor);
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        //  Debug.Log("44");
+                        graphCurrW[neighbor] = graphCurrW[currNode] + graph.GetWeight(neighbor);
+                        // Debug.Log("46");
+                        Fathers[neighbor] = currNode;
+                        if (!visted.ContainsKey(neighbor))
+                        {
+                            //   Debug.Log("50");
+                            insertNeighbour(Mins, graphCurrW[neighbor], neighbor, graph);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Mins.RemoveAt(0);
+            }
+        }
+        return Fathers;
+    }
+
+    /*public static void FindPath<NodeType>(
             WeightedGraph<NodeType> graph,
             NodeType startNode, NodeType endNode,
             List<NodeType> outputPath, int maxiterations = 1000)
@@ -20,35 +78,99 @@ public class Dijkstra
         LinkedList<NodeType> visited = new LinkedList<NodeType>();
         Dictionary<NodeType, NodeType> prev = new Dictionary<NodeType, NodeType>();
         Dictionary<NodeType, int> distance = new Dictionary<NodeType, int>();
+        List<NodeType> sortedNeighbours = new List<NodeType>();
+
         distance.Add(startNode, 0);
-        NodeType v = startNode;
+        sortedNeighbours.Add(startNode);
         visited.AddLast(startNode);
-        Debug.Log("Key Enqueue:" + startNode);
         int i = 0;
-        while (!v.Equals(endNode) && i < maxiterations)
+
+        while (i < maxiterations && sortedNeighbours.Count != 0)
         {
-            v = ExtractMin(distance, visited);
-            foreach (var neighbor in graph.Neighbors(v))
+            NodeType curr = sortedNeighbours[0];
+            Debug.Log(curr.ToString());
+            foreach (var neighbor in graph.Neighbors(curr))
             {
-                int dis = distance[v] + graph.GetWeight(neighbor);
+                int dis = distance[curr] + graph.GetWeight(neighbor);
                 if ((visited.Contains(neighbor) && distance[neighbor] > dis) || (!visited.Contains(neighbor)))
                 {
                     distance[neighbor] = dis;
-                    prev[neighbor] = v;
+                    prev[neighbor] = curr;
+                    if (!visited.Contains(neighbor))
+                    {
+                        insertNeighbour(sortedNeighbours, distance[neighbor], neighbor, graph);
+                    }
                 }
-            }
-            visited.AddFirst(v);
-            distance.Remove(v);
-                       // v = ExtractMin(distance, visited);
 
-            Debug.Log(v.ToString());
+            }
+            visited.AddFirst(curr);
+            sortedNeighbours.RemoveAt(0);
             i++;
         }
         outputPath = CreatePath(prev, startNode, endNode);
-        
+
+    }*/
+
+    public static List<NodeType> GetPath<NodeType>(WeightedGraph<NodeType> graph, NodeType source, NodeType dest)
+    {
+        List<NodeType> path = new List<NodeType>();
+        Dictionary<NodeType, NodeType> route = DijekstraBuilder(graph, source);
+        if (route.ContainsKey(dest))
+        {
+            NodeType tempD = dest;
+            path.Insert(0, tempD); //
+
+            while (!path[0].Equals(source))
+            {
+                //Debug.Log("END?");
+                tempD = route[tempD];
+                path.Insert(0, tempD);
+            }
+            // Debug.Log("return");
+        }
+        return path;
     }
 
-    private static List<NodeType> CreatePath<NodeType>(Dictionary<NodeType, NodeType> prev, NodeType startNode, NodeType endNode) 
+    private static void insertNeighbour<NodeType>(List<NodeType> sortedNeighbours, int w, NodeType neighbor, WeightedGraph<NodeType> graph)
+    {
+
+        int minIndex = 0;
+        int maxIndex = sortedNeighbours.Count - 1;
+        int middle = minIndex + (maxIndex - minIndex) / 2;
+
+        while (minIndex <= maxIndex)
+        {
+            if (graph.GetWeight(sortedNeighbours[middle]) == w)
+            {
+                sortedNeighbours.Insert(middle, neighbor);
+                break;
+            }
+            if (w > graph.GetWeight(sortedNeighbours[middle]))
+            {
+                minIndex = middle + 1;
+            }
+            if (w < graph.GetWeight(sortedNeighbours[middle]))
+            {
+                maxIndex = middle - 1;
+            }
+            middle = minIndex + (maxIndex - minIndex) / 2;
+        }
+        /*
+        int i = 0;
+        int index=-1;
+        while (i < sortedNeighbours.Count)
+        {
+            if (w > graph.GetWeight(sortedNeighbours[i])){
+                index = i;
+                break;
+            }
+            i++;
+        }
+        */
+   
+    }
+
+   /*private static List<NodeType> CreatePath<NodeType>(Dictionary<NodeType, NodeType> prev, NodeType startNode, NodeType endNode) 
     {
         List<NodeType> ans = new List<NodeType>();
         NodeType temp = endNode;
@@ -62,11 +184,13 @@ public class Dijkstra
         ans.Reverse();
         return ans;
     }
+   */
 
     public static List<NodeType> GetPath<NodeType>(WeightedGraph<NodeType> graph, NodeType startNode, NodeType endNode, int maxiterations = 1000)
     {
-        List<NodeType> path = new List<NodeType>();
-        FindPath(graph, startNode, endNode, path, maxiterations);
+        // = new List<NodeType>();
+        DijekstraBuilder(graph, startNode/*, endNode, path, maxiterations*/);
+        List<NodeType> path = GetPath(graph, startNode, endNode);
         return path;
     }
 

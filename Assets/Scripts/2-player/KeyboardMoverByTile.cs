@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Threading;
+using UnityEngine;
 using UnityEngine.Tilemaps;
 
 /**
@@ -8,6 +10,7 @@ using UnityEngine.Tilemaps;
 public class KeyboardMoverByTile: KeyboardMover {
     [SerializeField] Tilemap tilemap = null;
     [SerializeField] AllowedTiles allowedTiles = null;
+    [SerializeField] float timeToDestoy = 0.5f;
 
     private TileBase TileOnPosition(Vector3 worldPosition) {
         Vector3Int cellPosition = tilemap.WorldToCell(worldPosition);
@@ -20,6 +23,16 @@ public class KeyboardMoverByTile: KeyboardMover {
         if (allowedTiles.Contain(tileOnNewPosition)) {
             transform.position = newPosition;
         } else {
+            if (twoButt&&tileOnNewPosition.name.Equals("mountains"))
+            {
+                
+                Vector3Int a = tilemap.WorldToCell(newPosition);
+                tilemap.SetTile(a, allowedTiles.Get()[0]);
+                twoButt = false;
+                Thread.Sleep((int)(timeToDestoy*1000));
+                transform.position = newPosition;
+
+            }
             Debug.Log("You cannot walk on " + tileOnNewPosition + "!");
         }
     }
