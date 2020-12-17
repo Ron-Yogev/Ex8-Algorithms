@@ -38,7 +38,7 @@ public class LocatingThePlayer : MonoBehaviour
         
         transform.position = tilemap.CellToWorld(pos);
         StartCoroutine(waitTwoSec());
-        a.flag = false;
+        a.playerFlag = false;
     }
 
     private IEnumerator waitTwoSec()
@@ -50,7 +50,7 @@ public class LocatingThePlayer : MonoBehaviour
     void Update()
     {
         TilemapCaveGeneratorQ_6 a = tilemap.GetComponent<TilemapCaveGeneratorQ_6>();
-        if (a!=null && a.flag)
+        if (a!=null && a.playerFlag)
         {
             updatePlayer();
         }

@@ -39,13 +39,14 @@ public class TileEnd : MonoBehaviour
             }
         }
         tilemap.SetTile(pos, tilebase);
+        a.EndFlag = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         TilemapCaveGeneratorQ_6 a = tilemap.GetComponent<TilemapCaveGeneratorQ_6>();
-        if (a != null && a.flag)
+        if (a != null && a.EndFlag)
         {
             updatePlayer();
         }

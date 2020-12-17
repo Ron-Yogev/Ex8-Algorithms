@@ -10,7 +10,7 @@ using System.Collections;
  * Since: 2020-12
  */
 
-public class TilemapCaveGeneratorQ_6: MonoBehaviour {
+public class TilemapCaveGeneratorQ_6 : MonoBehaviour {
     [SerializeField] Tilemap tilemap = null;
 
     [Tooltip("The tile that represents a wall (an impassable block)")]
@@ -32,21 +32,28 @@ public class TilemapCaveGeneratorQ_6: MonoBehaviour {
     [Tooltip("For how long will we pause between each simulation step so we can look at the result?")]
     [SerializeField] float pauseTime = 1f;
 
-    public bool flag=false;
+    public bool E1flag = false;
+    public bool E2flag = false;
+    public bool EndFlag = false;
+    public bool playerFlag = false;
 
     public CaveGenerator caveGenerator;
 
-    public void Start()  {
-        flag = false;
+    public void Start()
+    {
+        E1flag = false;
+        E2flag = false;
+        EndFlag = false;
+        playerFlag = false;
         //To get the same random numbers each time we run the script
         Random.InitState(100);
 
         caveGenerator = new CaveGenerator(randomFillPercent, gridSize);
         caveGenerator.RandomizeMap();
-                
+
         //For testing that init is working
         GenerateAndDisplayTexture(caveGenerator.GetMap());
-            
+
         //Start the simulation
         StartCoroutine(SimulateCavePattern());
     }
@@ -64,7 +71,10 @@ public class TilemapCaveGeneratorQ_6: MonoBehaviour {
             GenerateAndDisplayTexture(caveGenerator.GetMap());
         }
         Debug.Log("Simulation completed!");
-        flag = true;
+        E1flag = true;
+        E2flag = true;
+        EndFlag = true;
+        playerFlag = true;
     }
 
 
