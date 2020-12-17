@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 130779376}
   - component: {fileID: 130779378}
   - component: {fileID: 130779375}
+  - component: {fileID: 130779379}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -236,6 +237,20 @@ MonoBehaviour:
   tilemap: {fileID: 931517250}
   allowedTiles: {fileID: 1972678413}
   timeToDestoy: 0.5
+--- !u!114 &130779379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130779374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de47e1b9f6db8d438c6ebfddb77d723, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemap: {fileID: 931517250}
+  tileBaseEnd: {fileID: 11400000, guid: 27a10ed4aca7af04d99475611b2a3ec1, type: 2}
 --- !u!1 &256998113
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,6 +637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 931517250}
+  enemyNumber: 1
 --- !u!1 &818154486
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,6 +755,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 931517250}
+  enemyNumber: 2
 --- !u!1 &931517247
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,7 +950,10 @@ MonoBehaviour:
   gridSize: 10
   simulationSteps: 2
   pauseTime: 1
-  flag: 0
+  E1flag: 0
+  E2flag: 0
+  EndFlag: 0
+  playerFlag: 0
 --- !u!850595691 &968743049
 LightingSettings:
   m_ObjectHideFlags: 0
