@@ -59,6 +59,10 @@ In addition, we added a component called NextLevel that receives at the beginnin
 
 <https://github.com/Ron-Yogev/Ex8-Algorithms/blob/master/Assets/Scripts/4-generation/TilemapCaveGeneratorQ_6.cs>
 
-* Screenshot:
+* Screenshots:
 
-![](Images/q_6.jpeg)
+![](Images/q_6_1.jpeg)
+
+![](Images/q_6_2.jpeg)
+
+![](Images/q_6_3.jpeg)
