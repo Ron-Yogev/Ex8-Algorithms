@@ -61,4 +61,8 @@ In addition, we added a component called NextLevel that receives at the beginnin
 
 * Screenshot:
 
-![](Images/q_6.jpeg)
+![](Images/q_6_1.jpeg)
+
+![](Images/q_6_2.jpeg)
+
+![](Images/q_6_3.jpeg)
