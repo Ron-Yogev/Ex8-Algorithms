@@ -17,6 +17,7 @@ In addition - if a particular tile does not have at least one neighbor of the sa
 
 * Screenshot:
 
+![](Images/q_4.jpeg)
 
 
 ### Q5 - Quarrying in Mountain
@@ -35,6 +36,7 @@ We will override the mountain tile and replace it with grass tile after a second
 
 * Screenshot:
 
+![](Images/q_5.jpeg)
 
 ### Q6 - Infinite number of levels and increasing the TileMap size
 
@@ -59,3 +61,4 @@ In addition, we added a component called NextLevel that receives at the beginnin
 
 * Screenshot:
 
+![](Images/q_6.jpeg)
