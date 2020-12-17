@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/**
+ * This class represnet the next level changer
+ */
 public class NextLevel : MonoBehaviour
 {
     [SerializeField] Tilemap tilemap = null;
@@ -13,6 +16,7 @@ public class NextLevel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //assign to current tilemap size and the cave generator
         a = tilemap.GetComponent<TilemapCaveGeneratorQ_6>();
         size = a.gridSize;
     }
@@ -20,9 +24,7 @@ public class NextLevel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(tileBaseEnd.name);
-        Debug.Log(tilemap.GetTile(tilemap.WorldToCell(transform.position)).name);
-
+        // when the player hit the end point tile we changing to the next level by setting higher gridsize
         if (tilemap.GetTile(tilemap.WorldToCell(transform.position)).name == tileBaseEnd.name)
         {
             a.gridSize =(int)(a.gridSize * 1.1);

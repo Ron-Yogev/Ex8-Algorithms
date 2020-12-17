@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/**
+ * This class represent the enemies locator before each level
+ */
 public class LocatingTheEnemy : MonoBehaviour
 {
     [SerializeField] Tilemap tilemap = null;
-    [SerializeField] int enemyNumber = 1;
+    [SerializeField] int enemyNumber = 1;//which enemy?
 
 
     // Start is called before the first frame update
@@ -20,11 +23,12 @@ public class LocatingTheEnemy : MonoBehaviour
     {
         bool e=false;
         TilemapCaveGeneratorQ_6 a = tilemap.GetComponent<TilemapCaveGeneratorQ_6>();
-        if (a != null)
+        if (a != null)//checking which enemy is
         {
             if (enemyNumber == 1) e = a.E1flag;
             else e = a.E2flag;
         }
+        // if the map done generating the cave locate the enemy
         if (a != null && e)
         {
             locatTheEnemy();
@@ -33,6 +37,7 @@ public class LocatingTheEnemy : MonoBehaviour
 
     void locatTheEnemy()
     {
+        //locate the enemy in a random position in the cave
         TilemapCaveGeneratorQ_6 a = tilemap.GetComponent<TilemapCaveGeneratorQ_6>();
         int[,] data = a.caveGenerator.GetMap();
 
@@ -44,6 +49,7 @@ public class LocatingTheEnemy : MonoBehaviour
         }
         transform.position = tilemap.CellToWorld(new Vector3Int(x, y, 0));
 
+        //if its done locating the enemy false the flag for the next level
         if (enemyNumber == 1) a.E1flag = false;
         else a.E2flag=false;
 

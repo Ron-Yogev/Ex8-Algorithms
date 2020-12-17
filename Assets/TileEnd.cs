@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/**
+ * This class represent the end tile locator
+ */
 public class TileEnd : MonoBehaviour
 {
 
     [SerializeField] TileBase tilebase = null;
-    [SerializeField] Tilemap tilemap = null;
+
+    [SerializeField] Tilemap endtilemap = null;
 
 
     // Start is called before the first frame update
@@ -18,7 +22,8 @@ public class TileEnd : MonoBehaviour
 
     public void updatePlayer()
     {
-        TilemapCaveGeneratorQ_6 a = tilemap.GetComponent<TilemapCaveGeneratorQ_6>();
+        //locating the end point in the corner
+        TilemapCaveGeneratorQ_6 a = endtilemap.GetComponent<TilemapCaveGeneratorQ_6>();
         int[,] data = a.caveGenerator.GetMap();
         int max = 0;
         Vector3Int pos = new Vector3Int();
@@ -38,14 +43,15 @@ public class TileEnd : MonoBehaviour
                 }
             }
         }
-        tilemap.SetTile(pos, tilebase);
+        endtilemap.SetTile(pos, tilebase);
         a.EndFlag = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        TilemapCaveGeneratorQ_6 a = tilemap.GetComponent<TilemapCaveGeneratorQ_6>();
+        //checking if the map done generating the cave
+        TilemapCaveGeneratorQ_6 a = endtilemap.GetComponent<TilemapCaveGeneratorQ_6>();
         if (a != null && a.EndFlag)
         {
             updatePlayer();

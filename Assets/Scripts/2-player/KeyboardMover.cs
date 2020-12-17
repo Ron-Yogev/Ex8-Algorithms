@@ -6,6 +6,7 @@
 public class KeyboardMover : MonoBehaviour {
     public bool twoButt = false;
 
+    //moving the player and checking if he presses on the 'x' button simultanly
     protected Vector3 NewPosition() {
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
             if (Input.GetKey("x")){

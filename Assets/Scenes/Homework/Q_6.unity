@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilebase: {fileID: 11400000, guid: 27a10ed4aca7af04d99475611b2a3ec1, type: 2}
-  tilemap: {fileID: 931517250}
+  endtilemap: {fileID: 931517250}
 --- !u!1 &419043803
 GameObject:
   m_ObjectHideFlags: 0

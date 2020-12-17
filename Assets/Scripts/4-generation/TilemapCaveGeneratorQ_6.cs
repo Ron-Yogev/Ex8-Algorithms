@@ -41,6 +41,7 @@ public class TilemapCaveGeneratorQ_6 : MonoBehaviour {
 
     public void Start()
     {
+        //flag to each object locator
         E1flag = false;
         E2flag = false;
         EndFlag = false;
@@ -71,6 +72,7 @@ public class TilemapCaveGeneratorQ_6 : MonoBehaviour {
             GenerateAndDisplayTexture(caveGenerator.GetMap());
         }
         Debug.Log("Simulation completed!");
+        //you can start locarting the players
         E1flag = true;
         E2flag = true;
         EndFlag = true;

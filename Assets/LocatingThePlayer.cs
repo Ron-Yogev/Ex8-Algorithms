@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/**
+ * This class represent the player locator before each level
+ */
 public class LocatingThePlayer : MonoBehaviour
 {
     [SerializeField] Tilemap tilemap = null;
@@ -15,6 +18,7 @@ public class LocatingThePlayer : MonoBehaviour
 
     public void updatePlayer()
     {
+        // locating the player in the corner of the cave
         TilemapCaveGeneratorQ_6 a = tilemap.GetComponent<TilemapCaveGeneratorQ_6>();
         int[,] data = a.caveGenerator.GetMap();
         int min = 100000000;
@@ -37,19 +41,14 @@ public class LocatingThePlayer : MonoBehaviour
         }
         
         transform.position = tilemap.CellToWorld(pos);
-        StartCoroutine(waitTwoSec());
         a.playerFlag = false;
-    }
-
-    private IEnumerator waitTwoSec()
-    {
-        yield return new WaitForSeconds(2);
     }
 
     // Update is called once per frame
     void Update()
     {
         TilemapCaveGeneratorQ_6 a = tilemap.GetComponent<TilemapCaveGeneratorQ_6>();
+        //if its done generating the cave loacte the player
         if (a!=null && a.playerFlag)
         {
             updatePlayer();

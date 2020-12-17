@@ -22,7 +22,7 @@ public class KeyboardMoverByTile: KeyboardMover {
         TileBase tileOnNewPosition = TileOnPosition(newPosition);
         if (allowedTiles.Contain(tileOnNewPosition)) {
             transform.position = newPosition;
-        } else {
+        } else {//if the player hit a mountain, and also press both 'x' and arrow its break the tile into a grass and put the player on his position
             if (twoButt&&tileOnNewPosition.name.Equals("mountains"))
             {
                 

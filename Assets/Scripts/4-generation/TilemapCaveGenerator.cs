@@ -105,6 +105,7 @@ public class TilemapCaveGenerator: MonoBehaviour {
         }
     }
 
+    // checking if the till git neighbour that is the same tile
     public bool neighbours(int[,] data,int x,int y, int value)
     {
         if (y + 1 < gridSize && x + 1 < gridSize && x-1>=0 && y-1>=0 && 
@@ -117,6 +118,8 @@ public class TilemapCaveGenerator: MonoBehaviour {
         return false;
     }
 
+
+    //this function changer the floor randomly(p(1/2)) two floors 
     private void twoTilesChanger(int[,] data)
     {
         for (int y = 0; y < gridSize; y++)
